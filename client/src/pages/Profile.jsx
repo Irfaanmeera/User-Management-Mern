@@ -23,7 +23,7 @@ function Profile() {
   const [formData, setFormData] = useState({});
   const [updateSuccess,setUpdateSuccess] = useState(false)
 
-  
+
   const { currentUser,loading,error } = useSelector((state) => state.user);
   
   useEffect(() => {
@@ -77,8 +77,8 @@ if(data.success === false){
   return;
 }
 dispatch(updateUserSuccess(data))
-toast('User updated Successfully',{
-  autoClose: 1000,
+toast.success('User updated Successfully',{
+  autoClose: 500,
   className:'text-green-600',
   hideProgressBar: true
 })
@@ -142,7 +142,6 @@ setUpdateSuccess(true)
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete Account</span>
         <span className="text-red-700 cursor-pointer">Sign Out</span>
       </div>
       <p className="text-red-700 mt-5">{error && 'Something went wrong'}</p>
