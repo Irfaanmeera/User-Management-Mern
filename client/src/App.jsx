@@ -4,9 +4,12 @@ import About from "./pages/About";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
+import Login from './pages/admin/Login'
 import PrivateRoute from "./components/PrivateRoute";
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import AdminHome from "./pages/admin/AdminHome";
+import AdminPrivateRoute from "./components/AdminPrivateRoute";
 
 function App() {
   return (
@@ -19,6 +22,13 @@ function App() {
         <Route path="/sign-up" element={<Signup />} />
         <Route element={<PrivateRoute/>}>
         <Route path="/profile" element={<Profile />} />
+        </Route>
+      </Routes>
+
+      <Routes>
+        <Route path="/admin" element={<Login/>}/>
+        <Route element={<AdminPrivateRoute/>}>
+        <Route path="/admin/home" element={<AdminHome/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

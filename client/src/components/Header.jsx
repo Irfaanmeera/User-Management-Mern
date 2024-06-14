@@ -34,9 +34,11 @@ function Header() {
           <Link to="about">
             <li>About</li>
           </Link>
+          <Link to='/profile'>
           {currentUser?
           (<li className="text-slate-600">{currentUser.username}</li>):''
           }
+          </Link>
           
           <Link to="/sign-in">
           {currentUser ?

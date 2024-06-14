@@ -141,9 +141,7 @@ setUpdateSuccess(true)
           Update
         </button>
       </form>
-      <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Sign Out</span>
-      </div>
+      
       <p className="text-red-700 mt-5">{error && 'Something went wrong'}</p>
      
     </div>
