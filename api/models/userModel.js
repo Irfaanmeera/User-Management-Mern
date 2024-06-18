@@ -17,7 +17,7 @@ const userSchema= new mongoose.Schema({
     },
     profilePicture:{
         type:String,
-        default:'https://tse1.mm.bing.net/th?id=OIP.8li1g3WASRlQCpV6X54VCQHaHa&pid=Api&P=0&h=180'
+        default:'https://tse1.mm.bing.net/th?id=OIP.ZCOIs5RX4d-KB49VZAjfXgAAAA&pid=Api&P=0&h=180'
     }
 },{timestamps:true})
 

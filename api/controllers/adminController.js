@@ -1,6 +1,7 @@
 import Admin from '../models/adminModel.js'
 import jwt from 'jsonwebtoken'
 import User from '../models/userModel.js';
+import bcrypt from 'bcryptjs'
 import { errorHandler } from '../utils/error.js';
 
 export const adminLogin = async (req,res,next)=>{
@@ -35,6 +36,76 @@ export const adminHome =async (req,res)=>{
         console.log(error);
       }
     };
+    export const edituserData = async (req, res) => {
+      try {
+        const id = req.params.id;
+    
+        const user = await User.findOne({ _id: id });
+        res.status(200).json(user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    export const addUser = async(req,res,next)=>{
+      try{
+        const {username, email,password} = req.body
+         const user = await User.findOne({username})
+         const emailExist = await User.findOne({email})
+
+         if(user){
+          return res.json({success:false,message: 'Username already exists'})
+         }
+         
+         if(emailExist){
+          return res.json({success:false,message: 'Email already exists'})
+         }
+         
+         if(password.length<8){
+          return res.json({success:false,message: 'Password too short'})
+         }
+
+        const hashedPassword = bcrypt.hashSync(password,10)
+        const newUser = new User({username,email,password:hashedPassword})
+        console.log(newUser)
+        await newUser.save()
+        res.status(201).json({message:'User added successfully'})
+      }catch(error){
+        next(error)
+      }
+    }
+
+   
+export const userEdit = async (req,res)=>{
+  try{
+    const{userName,email} = req.body;
+    const {id} = req.params;
+    const editedUser = await User.findByIdAndUpdate(
+      {_id:id},
+      {
+          $set:{
+              username :userName,
+              email:email,
+          }
+      }
+     );
+     console.log(`Edited User : ${editedUser}`)
+      res.json({ success: true });
+  }catch(error){
+    console.log(error)
+  }
+
+}
+
+export const deleteuser = async (req, res) => {
+  try {
+    const deleteduser = await User.deleteOne({ _id: req.params.id });
+    console.log(deleteduser);
+    res.status(200).json("user deleted");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   
 

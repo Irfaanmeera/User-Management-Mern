@@ -15,6 +15,8 @@ const adminSlice = createSlice({
         },
         adminLoginFailure:(state,action)=>{
             state.isLogged = action.payload;
+            state.isLogged =false;
+            state.admin=null;
         },
         adminLogout :(state)=>{
             state.admin = null;

@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import {signInStart, signInSuccess, signInFailure} from '../redux/user/userSlice.js'
 import { useDispatch, useSelector } from "react-redux";
 import OAuth from "../components/OAuth.jsx";
+import {toast} from 'react-toastify'
 
 export default function Signin() {
     const [formData,setFormData] = useState({})
-   const {loading,error} = useSelector((state)=>state.user)
+   const {currentUser,loading,error} = useSelector((state)=>state.user)
     const navigate = useNavigate()
-    const dispatch = useDispatch()                                                   
+    const dispatch = useDispatch()   
+    
+    useEffect(() => {
+      if (currentUser) {
+        navigate("/");
+      }
+    }, []);
+    
     const handleChange =(e)=>{
        setFormData({...formData, [e.target.id]:e.target.value})
     }
@@ -29,6 +37,11 @@ export default function Signin() {
         console.log(data)
         if(data.success === false){
             dispatch(signInFailure(data.message))
+            navigate('/sign-in')
+            toast.error(data.message,{
+              autoClose: 500,
+              hideProgressBar: true,
+            })
             return;
         }
         navigate('/')
@@ -39,7 +52,6 @@ export default function Signin() {
   return (
     <div className="p-3 max-w-md mx-auto ">
       <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
-      <p className='text-red-700 mt-5 mb-5 font-semibold ml-3'>{error? error|| 'Something went wrong': ''}</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
         
         <input

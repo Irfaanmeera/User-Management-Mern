@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { adminLogin, adminLoginFailure } from "../../redux/admin/adminSlice.js";
 import { toast } from "react-toastify";
@@ -9,8 +9,13 @@ export default function Login() {
     const [error,setError] = useState('')
     const navigate = useNavigate()
     const dispatch = useDispatch()   
-    const {admin,isLogged} = useSelector((state)=>state.admin)   
-    
+    const {admin,isLogged} = useSelector((state)=>state.admin)  
+ 
+    useEffect(() => {
+      if (isLogged) {
+        navigate("/admin/home");
+      }
+    }, []);
 
     const handleChange =(e)=>{
        setFormData({...formData, [e.target.id]:e.target.value})
@@ -29,22 +34,26 @@ export default function Login() {
         })
         const data = await res.json();
         dispatch(adminLogin(data))
+       
+        console.log(data)
+
+        if(data.success===false){
+        dispatch(adminLoginFailure(data))
+        navigate('/admin')
+        toast.error(data.message,{
+          autoClose: 500,
+          hideProgressBar: true,
+        })
+        return;
+        }
+        navigate('/admin/home',{ replace: true })
         toast.success('Login Successfull',{
           autoClose: 500,
           className:'text-green-600',
           hideProgressBar: true
         })
-        console.log(data)
-
-        if(data.success===false){
-        dispatch(adminLoginFailure(data))
-        toast.error(data.message)
-        navigate('/admin')
-        return;
-        }
-       navigate('/admin/home')
     }catch(error){
-      console.log(error)
+      dispatch(adminLoginFailure(error))
     }
     }
   return (
